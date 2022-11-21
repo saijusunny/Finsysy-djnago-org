@@ -32065,12 +32065,54 @@ def sa(request):
 
 def bnk1(request,pk):
     bk=accounts1.objects.get(accounts1id=pk)
-    customers = customer.objects.all()
+    customers=customer.objects.all()
+    vendors=vendor.objects.all()
+    payments = payment.objects.all()
+    pym_item = paymentitems.objects.all()
+    exppenses=purchase_expense.objects.all()
     cmp1 = company.objects.get(id=request.session["uid"])
-    context={'bk':bk,'customers': customers, 'cmp1': cmp1}
+    context={'bk':bk,
+    'payments': payments,
+    'pym_item':pym_item,
+    'cmp1': cmp1,
+    'exppenses':exppenses,
+    'customers':customers,
+    'vendors':vendors,
+    }
     return render(request,"app1/bnk1.html",context)
 
+def add_expenses(request):
+    exp_acnt=request.POST.get('acc_type')
+    vendor_nme=request.POST.get('vendor_nm')
+    amount=request.POST.get('amount')
+    type_details=request.POST.get('Type details')
+    dte_exp=request.POST.get('dt_exp')
+    exp_tax=request.POST.get('exp_tax')
+    ref_no=request.POST.get('ref_no')
+    customer=request.POST.get('cust')
+    expenses = purchase_expense(expenseaccount=exp_acnt,vendor=vendor_nme,amount=amount,note=type_details,date=dte_exp,tax=exp_tax,reference=ref_no,customer=customer)
+    expenses.save()
+    return redirect('bnnk')
 
+
+def payment_vnk(request):
+    cust_nm=request.POST.get('customername')
+    amt_cu=request.POST.get('amt_cu')
+    type_details=request.POST.get('type_details')
+    cus_date=request.POST.get('cus_date')
+    rese_to=request.POST.get('rese_to')
+    py_ref=request.POST.get('py_ref')
+    cid=company.objects.get(id=request.session["uid"])
+    # bnk_ref=request.POST.get('bnk_ref')
+    # cust_nm=request.POST.get('customername')
+    # cust_nm=request.POST.get('customername')
+    pym=payment(customer=cust_nm,paymdate=cus_date,pmethod=rese_to,refno=py_ref,amtreceived=amt_cu,cid=cid)
+    pym.save()
+    return redirect('bnnk')
+    
+
+
+    
 def accpayment(request):
     cmp1 = company.objects.get(id=request.session["uid"])
     acctype = request.POST.get('acctype')

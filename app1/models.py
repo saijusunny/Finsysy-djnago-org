@@ -1152,7 +1152,7 @@ class payment(models.Model):
     pmethod = models.CharField(max_length=100,null=True)
     refno = models.CharField(max_length=100,null=True)
     depto = models.CharField(max_length=100,null=True)
-    amtreceived = models.FloatField()
+    amtreceived = models.FloatField(null=True)
     amtapply = models.FloatField(null=True)
     amtcredit = models.FloatField(null=True)
     referno = models.CharField(max_length=255, )

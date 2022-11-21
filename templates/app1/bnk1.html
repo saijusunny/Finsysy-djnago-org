@@ -81,12 +81,12 @@
             </div>
             <div class="modal-body">
                 <div class="card p-3 m-3">
-                    <form method="post" action="">
+                    <form method="post" action="{% url 'add_expenses'%}">
                         {% csrf_token %}
                         <div class="row mt-2 mb-2">
                             <div class="col-md-6">
                                 <label for="acctyp">Expense Account</label>
-                               <select class="form-control">
+                               <select class="form-control" name="acc_type">
                                 <option>Advertising and Marketing</option>
                                 <option>Audit Fee</option>
                                 <option>Automobile Expense</option>
@@ -106,8 +106,15 @@
                             
                             <div class="col-md-6">
                                 <label for="name">*Vendor</label>
-                                <select class="form-control">
-                                    <option></option>
+                                <select class="form-control" name="vendor_nm">
+                                    <option value="NIL" disabled selected>Select Vendor</option>
+                                    {% for vend in vendors %}
+                                    {% if vend.cid_id == cmp1.cid %}
+                                    <a href="{% url 'sa' %}">
+                                    <option text="{{ vend.vendorid }}" value="{{ vend.firstname }} {{ vend.lastname }}">{{ vend.firstname }} {{ vend.lastname }}</option>
+                                    </a>
+                                    {% endif %}
+                                    {% endfor %}
                                 </select>
                             </div>
 
@@ -121,7 +128,7 @@
                             
                             <div class="col-md-6">
                                 <label for="description">Amount</label>
-                                <input type="text" name="description" class="form-control">
+                                <input type="text" name="amount" class="form-control">
                             </div>
                         </div>
                         <div class="row">
@@ -136,19 +143,19 @@
                                     <div>
                                       
                                     <label for="detype">Date </label>
-                                    <input type="date" class="form-control">
+                                    <input type="date"  name='dt_exp' class="form-control">
                                         
                                     </div>
                                 </div>
                                 <div class="mt-2">
                                     <label>Tax</label>
-                                   <select class="form-control">
+                                   <select class="form-control" name="exp_tax">
                                     <option></option>
                                    </select>
                                 </div>
                                 <div class="mt-2">
                                    <label>#Reference</label>
-                                   <input type="text" class="form-control">
+                                   <input type="text" name="ref_no" class="form-control">
                                 </div><br>
                                 <div class="mt-2">
                                     
@@ -159,7 +166,7 @@
                                  </div>
                                 
                                     <div class="mt-2">
-                                        <label for="balance">Customer</label>
+                                        <label for="cust">Customer</label>
                                         <input type="text" name="balance" id="balance"
                                                class="form-control">
                                     </div>
@@ -201,8 +208,15 @@
                             <div class="col-md-6">
                                 <label for="acctyp">Vendor</label>
                               <select class="form-control" name="exac">
-                                <option>new</option>
-                                <option></option>
+                                
+                                <option value="NIL" disabled selected>Select Vendor</option>
+                                    {% for vend in vendors %}
+                                    {% if vend.cid_id == cmp1.cid %}
+                                    <a href="{% url 'sa' %}">
+                                    <option text="{{ vend.vendorid }}" value="{{ vend.firstname }} {{ vend.lastname }}">{{ vend.firstname }} {{ vend.lastname }}</option>
+                                    </a>
+                                    {% endif %}
+                                    {% endfor %}
                               </select>
                             </div>    
 
@@ -258,7 +272,7 @@
                             <div class="mt-2">
                                 <label>#Reference</label>
                                 <input type="text" class="form-control" name="refenrence">
-                            </div><br>
+                            </div><br> 
                             <div class="mt-2">
                                 
                             </div>
@@ -294,7 +308,7 @@
             </div>
             <div class="modal-body">
                 <div class="card p-3 m-3">
-                    <form method="post" action="">
+                    <form method="post" action="{%url 'payment_vnk'%}">
                         {% csrf_token %}
                         <div class="row mt-2 mb-2">
                             <div class="col-md-6">
@@ -314,7 +328,14 @@
                             <div class="col-md-6">
                                 <label for="name">Vendor</label>
                                 <select class="form-control">
-                                    <option></option>
+                                    <option value="NIL" disabled selected>Select Vendor</option>
+                                    {% for vend in vendors %}
+                                    {% if vend.cid_id == cmp1.cid %}
+                                    <a href="{% url 'sa' %}">
+                                    <option text="{{ vend.vendorid }}" value="{{ vend.firstname }} {{ vend.lastname }}">{{ vend.firstname }} {{ vend.lastname }}</option>
+                                    </a>
+                                    {% endif %}
+                                    {% endfor %}
                                 </select>
                             </div>
                           <br>
@@ -328,13 +349,13 @@
                             <br>
                             <div class="col-md-6">
                                 <label for="description">Amount Received</label>
-                                <input type="text" name="description" class="form-control" text="{{ha.opening_balance}}">
+                                <input type="text" name="amt_cu" class="form-control" >
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <label>Description</label>
-                        <textarea class="form-control mt-2" name="Type details" cols="20" class="form-control"
+                        <textarea class="form-control mt-2" name="type_details" cols="20" class="form-control"
                                   rows="10" style="font-size: small;" ></textarea>
                             </div>
                            
@@ -343,14 +364,14 @@
                                     <div>
                                       
                                     <label for="detype">Date </label>
-                                    <input type="date" class="form-control">
+                                    <input type="date" name="cus_date" class="form-control">
                                         
                                     </div>
                                 </div>
                                 <br>
                                 <div class="mt-2">
                                     <label>Received Trough</label>
-                                   <select class="form-control">
+                                   <select class="form-control" name="rese_to">
                                     <option>Bank Transfer</option>
                                     <option>Cash</option>
                                     <option>Cheque</option>
@@ -359,14 +380,14 @@
                                 <br>
                                 <div class="mt-2">
                                    <label>#Payment Reference No</label>
-                                   <input type="text" class="form-control">
+                                   <input type="text" name="py_ref" class="form-control">
                                 </div><br>
                                 <div class="mt-2">
                                     
                                  </div>
                                  <div class="mt-2">
                                     <label>#Bank Reference No</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" name="bnk_ref" class="form-control">
                                  </div><br>
                                  <div class="mt-2">
                                      
@@ -1580,19 +1601,49 @@
                     <th>Withdrawal</th>
                     <th>Running Balance</th>
                 </tr>
-                {% for customer in customers %}
-                {% if customer.cid_id == cmp1.cid %}
+                {% for pym in payments %}
+                {% if pym.cid_id == cmp1.cid %}
                 <tr style="text-align:center ;" class="rw">
 
-                    <td>{{ customer.date }}</td>
+                    <td>{{ pym.paymdate }}</td>
                     <td>Customer Payment</td>
-                    <td>10000</td>
+                    <td>{{ pym.amtreceived }}</td>
                     <td></td>
                     <td></td>
                     
                 </tr>
                 {% endif %}
                 {% endfor %}
+
+                {% for pym2 in pym_item %}
+                {% if pym2.cid_id == cmp1.cid %}
+                <tr style="text-align:center ;" class="rw">
+
+                    <td>{{ pym2.invdate }}</td>
+                    <td>Vendor Payment</td>
+                    <td>{{ pym2.paymentamount }}</td>
+                    <td></td>
+                    <td></td>
+                    
+                </tr>
+                {% endif %}
+                {% endfor %}
+                
+                {% for exp in exppenses %}
+                
+                <tr style="text-align:center ;" class="rw">
+
+                    <td>{{ exp.date }}</td>
+                    <td>Expense</td>
+                    <td></td>
+                    <td>{{ exp.amount }}</td>
+                    <td></td>
+                    
+                </tr>
+                
+                {% endfor %}
+
+
                 <tr>
                     <td></td>
                     <td></td>
@@ -1757,7 +1808,7 @@ function sho() {
         function poppinss() {
             var chkbtnn = document.getElementById('okayy');
             
-            document.write(document.getElementById('okayy'));
+            // document.write(document.getElementById('okayy'));
             if (chkbtnn.checked == true) {
                 document.getElementById('shipstreet').value = document.getElementById('street').value;
                 document.getElementById('shipcity').value = document.getElementById('city').value;
