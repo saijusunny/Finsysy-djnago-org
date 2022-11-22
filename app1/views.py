@@ -32090,7 +32090,8 @@ def add_expenses(request,pk):
         amount=request.POST.get('amount')
         type_details=request.POST.get('Type details')
         dte_exp=request.POST.get('dt_exp')
-    
+        
+        ref_no=request.POST.get('ref_no')
         customer=request.POST.get('cust')
         file = request.FILES.get('pic')
         cid=company.objects.get(id=request.session["uid"])
@@ -32098,7 +32099,7 @@ def add_expenses(request,pk):
         
         running_bl=float(sum1)-float(amount)
 
-        expenses = expense_banking(expenseaccount=exp_acnt,vendor=vendor_nme,amount=amount,note=type_details,date=dte_exp,customer=customer,file=file,cid=cid,running_bal=running_bl)
+        expenses = expense_banking(expenseaccount=exp_acnt,vendor=vendor_nme,amount=amount,note=type_details,date=dte_exp,reference=ref_no,customer=customer,file=file,cid=cid,running_bal=running_bl)
         expenses.save()
         bk.balance=running_bl
         bk.save()
@@ -32116,7 +32117,9 @@ def payment_vnk(request,pk):
         type_details=request.POST.get('type_details')
         cus_date=request.POST.get('cus_date')
         rese_to=request.POST.get('rese_to')
+        py_ref=request.POST.get('py_ref')
         cid=company.objects.get(id=request.session["uid"])
+        bnk_ref=request.POST.get('bnk_ref')
         cmp1 = company.objects.get(id=request.session["uid"])
         file = request.FILES.get('pic')
         sum1=bk.balance
@@ -32129,6 +32132,8 @@ def payment_vnk(request,pk):
                             des=type_details,
                             date=cus_date,
                             received_through=rese_to,
+                            paym_ref_no=py_ref,
+                            bnk_ref_no=bnk_ref,
                             file = file,
                             cid=cmp1,
                             running_bal=running_bl
@@ -32152,7 +32157,7 @@ def payment_vendor(request,pk):
         cus_date=request.POST.get('tdate')
         acc=request.POST.get('account')
         paid=request.POST.get('paid')
-        
+        ref=request.POST.get('py_ref')
         cid=company.objects.get(id=request.session["uid"])
         cmp1 = company.objects.get(id=request.session["uid"])
         cust_nm=request.POST.get('customer')
@@ -32165,6 +32170,7 @@ def payment_vendor(request,pk):
                             des=type_details,
                             date=cus_date,
                             paid_through=paid,
+                            ref_no=ref,
                             account=acc,
                             cid=cmp1,
                             running_bal=running_bl
