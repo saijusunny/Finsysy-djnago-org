@@ -763,8 +763,9 @@ urlpatterns = [
     re_path(r'^oincm$',views.oincm,name='oincm'),
     re_path(r'^cog$',views.cog,name='cog'),
     re_path(r'^exp$',views.exp,name='exp'),
-    path('add_expenses',views.add_expenses,name='add_expenses'),
-    path('payment_vnk',views.payment_vnk,name='payment_vnk'),
+    path(r'^add_expenses/(?P<pk>\d+)$',views.add_expenses,name='add_expenses'),
+    path(r'^payment_vnk/(?P<pk>\d+)$',views.payment_vnk,name='payment_vnk'),
+    path(r'^payment_vendor/(?P<pk>\d+)$',views.payment_vendor,name='payment_vendor'),
 
 
         

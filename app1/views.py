@@ -10,8 +10,8 @@ from datetime import datetime, date, timedelta
 from .models import advancepayment, paydowncreditcard, salesrecpts, timeact, timeactsale, Cheqs, suplrcredit, addac, \
     bills, invoice, expences, payment, credit, delayedcharge, estimate, service, noninventory, bundle, employee, \
     payslip, inventory, customer, supplier, company, accounts, ProductModel, ItemModel, accountype, \
-    expenseaccount, incomeaccount, accounts1, recon1, recordpay, addtax1, bankstatement, customize
-
+    expenseaccount, incomeaccount, accounts1, recon1, recordpay, addtax1, bankstatement, customize,customer_payment, \
+    vendor_payment
 from django.contrib.auth.models import auth, User
 from django.contrib import messages
 from django.db.models import Sum, Q
@@ -32064,15 +32064,16 @@ def sa(request):
     # return render(request,"app1/bnk1.html",context)
 
 def bnk1(request,pk):
+
     bk=accounts1.objects.get(accounts1id=pk)
     customers=customer.objects.all()
     vendors=vendor.objects.all()
-    payments = payment.objects.all()
-    pym_item = paymentitems.objects.all()
-    exppenses=purchase_expense.objects.all()
+    cust_pym = customer_payment.objects.all()
+    pym_item = vendor_payment.objects.all()
+    exppenses=expense_banking.objects.all()
     cmp1 = company.objects.get(id=request.session["uid"])
     context={'bk':bk,
-    'payments': payments,
+    'cust_pym': cust_pym,
     'pym_item':pym_item,
     'cmp1': cmp1,
     'exppenses':exppenses,
@@ -32081,34 +32082,101 @@ def bnk1(request,pk):
     }
     return render(request,"app1/bnk1.html",context)
 
-def add_expenses(request):
-    exp_acnt=request.POST.get('acc_type')
-    vendor_nme=request.POST.get('vendor_nm')
-    amount=request.POST.get('amount')
-    type_details=request.POST.get('Type details')
-    dte_exp=request.POST.get('dt_exp')
-    exp_tax=request.POST.get('exp_tax')
-    ref_no=request.POST.get('ref_no')
-    customer=request.POST.get('cust')
-    expenses = purchase_expense(expenseaccount=exp_acnt,vendor=vendor_nme,amount=amount,note=type_details,date=dte_exp,tax=exp_tax,reference=ref_no,customer=customer)
-    expenses.save()
-    return redirect('bnnk')
+def add_expenses(request,pk):
+    if request.method =="POST":
+        bk=accounts1.objects.get(accounts1id=pk)
+        exp_acnt=request.POST.get('acc_type')
+        vendor_nme=request.POST.get('vendor_nm')
+        amount=request.POST.get('amount')
+        type_details=request.POST.get('Type details')
+        dte_exp=request.POST.get('dt_exp')
+    
+        customer=request.POST.get('cust')
+        file = request.FILES.get('pic')
+        cid=company.objects.get(id=request.session["uid"])
+        sum1=bk.balance
+        
+        running_bl=float(sum1)-float(amount)
+
+        expenses = expense_banking(expenseaccount=exp_acnt,vendor=vendor_nme,amount=amount,note=type_details,date=dte_exp,customer=customer,file=file,cid=cid,running_bal=running_bl)
+        expenses.save()
+        bk.balance=running_bl
+        bk.save()
+        return redirect('bnnk')
+    else:
+        return redirect('bnnk')
 
 
-def payment_vnk(request):
-    cust_nm=request.POST.get('customername')
-    amt_cu=request.POST.get('amt_cu')
-    type_details=request.POST.get('type_details')
-    cus_date=request.POST.get('cus_date')
-    rese_to=request.POST.get('rese_to')
-    py_ref=request.POST.get('py_ref')
-    cid=company.objects.get(id=request.session["uid"])
-    # bnk_ref=request.POST.get('bnk_ref')
-    # cust_nm=request.POST.get('customername')
-    # cust_nm=request.POST.get('customername')
-    pym=payment(customer=cust_nm,paymdate=cus_date,pmethod=rese_to,refno=py_ref,amtreceived=amt_cu,cid=cid)
-    pym.save()
-    return redirect('bnnk')
+def payment_vnk(request,pk):
+    if request.method =="POST":
+        bk=accounts1.objects.get(accounts1id=pk)
+        cust_nm=request.POST.get('customername')
+        vendor=request.POST.get('vendor')
+        amt_cu=request.POST.get('amt_cu')
+        type_details=request.POST.get('type_details')
+        cus_date=request.POST.get('cus_date')
+        rese_to=request.POST.get('rese_to')
+        cid=company.objects.get(id=request.session["uid"])
+        cmp1 = company.objects.get(id=request.session["uid"])
+        file = request.FILES.get('pic')
+        sum1=bk.balance
+        
+        running_bl=float(sum1)+float(amt_cu)
+
+        pym=customer_payment(customer=cust_nm,
+                            vendor=vendor,
+                            amount_received=amt_cu,
+                            des=type_details,
+                            date=cus_date,
+                            received_through=rese_to,
+                            file = file,
+                            cid=cmp1,
+                            running_bal=running_bl
+                            )
+        pym.save()
+        bk.balance=running_bl
+        bk.save()
+        return redirect('bnnk')
+    else:
+       return redirect('bnnk') 
+
+
+def payment_vendor(request,pk):
+    if request.method =="POST":
+        bk=accounts1.objects.get(accounts1id=pk)
+        print(bk)
+        cust_nm=request.POST.get('customer')
+        vendor=request.POST.get('vendor')
+        amt_cu=request.POST.get('amount')
+        type_details=request.POST.get('description')
+        cus_date=request.POST.get('tdate')
+        acc=request.POST.get('account')
+        paid=request.POST.get('paid')
+        
+        cid=company.objects.get(id=request.session["uid"])
+        cmp1 = company.objects.get(id=request.session["uid"])
+        cust_nm=request.POST.get('customer')
+        sum1=bk.balance
+        
+        running_bl=float(sum1)+float(amt_cu)
+        pyms=vendor_payment(customer=cust_nm,
+                            vendor=vendor,
+                            amount_received=amt_cu,
+                            des=type_details,
+                            date=cus_date,
+                            paid_through=paid,
+                            account=acc,
+                            cid=cmp1,
+                            running_bal=running_bl
+                            )
+        pyms.save()
+
+        bk.balance=running_bl
+        bk.save()
+        return redirect('bnnk')
+    else:
+        return redirect('bnnk')
+
     
 
 
