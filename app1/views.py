@@ -32051,26 +32051,16 @@ def bnnk(request):
     context={'i':i,'c':c,'u':u}
     return render(request,'app1/bnk.html',context)
 
-def sa(request):
-    csname = request.POST.get('customername')
-    gs = csname.split(' ') 
-    print(csname)
-    ha = customer.objects.filter(firstname=gs[0])
-    context={'ha':ha,}
-    return render(request,"app1/bnk1.html",context)
 
-    # ck=customer.objects.get(customerid=pk)
-    # context={'ck':ck,}
-    # return render(request,"app1/bnk1.html",context)
 
 def bnk1(request,pk):
 
     bk=accounts1.objects.get(accounts1id=pk)
     customers=customer.objects.all()
     vendors=vendor.objects.all()
-    cust_pym = customer_payment.objects.all()
-    pym_item = vendor_payment.objects.all()
-    exppenses=expense_banking.objects.all()
+    cust_pym = customer_payment.objects.filter(accounts1id_id=pk)
+    pym_item = vendor_payment.objects.filter(accounts1id_id=pk)
+    exppenses=expense_banking.objects.filter(accounts1id_id=pk)
     cmp1 = company.objects.get(id=request.session["uid"])
     context={'bk':bk,
     'cust_pym': cust_pym,
@@ -32095,11 +32085,12 @@ def add_expenses(request,pk):
         customer=request.POST.get('cust')
         file = request.FILES.get('pic')
         cid=company.objects.get(id=request.session["uid"])
+
         sum1=bk.balance
         
         running_bl=float(sum1)-float(amount)
 
-        expenses = expense_banking(expenseaccount=exp_acnt,vendor=vendor_nme,amount=amount,note=type_details,date=dte_exp,reference=ref_no,customer=customer,file=file,cid=cid,running_bal=running_bl)
+        expenses = expense_banking(expenseaccount=exp_acnt,vendor=vendor_nme,amount=amount,note=type_details,date=dte_exp,reference=ref_no,customer=customer,file=file,cid=cid,running_bal=running_bl,accounts1id_id=pk)
         expenses.save()
         bk.balance=running_bl
         bk.save()
@@ -32136,7 +32127,8 @@ def payment_vnk(request,pk):
                             bnk_ref_no=bnk_ref,
                             file = file,
                             cid=cmp1,
-                            running_bal=running_bl
+                            running_bal=running_bl,
+                            accounts1id_id=pk
                             )
         pym.save()
         bk.balance=running_bl
@@ -32163,7 +32155,7 @@ def payment_vendor(request,pk):
         cust_nm=request.POST.get('customer')
         sum1=bk.balance
         
-        running_bl=float(sum1)+float(amt_cu)
+        running_bl=float(sum1)-float(amt_cu)
         pyms=vendor_payment(customer=cust_nm,
                             vendor=vendor,
                             amount_received=amt_cu,
@@ -32173,7 +32165,8 @@ def payment_vendor(request,pk):
                             ref_no=ref,
                             account=acc,
                             cid=cmp1,
-                            running_bal=running_bl
+                            running_bal=running_bl,
+                            accounts1id_id=pk
                             )
         pyms.save()
 

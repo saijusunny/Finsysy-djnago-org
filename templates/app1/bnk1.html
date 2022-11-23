@@ -110,9 +110,9 @@
                                     <option value="NIL" disabled selected>Select Vendor</option>
                                     {% for vend in vendors %}
                                     {% if vend.cid_id == cmp1.cid %}
-                                    <a href="{% url 'sa' %}">
+                                    
                                     <option text="{{ vend.vendorid }}" value="{{ vend.firstname }} {{ vend.lastname }}">{{ vend.firstname }} {{ vend.lastname }}</option>
-                                    </a>
+                                    
                                     {% endif %}
                                     {% endfor %}
                                 </select>
@@ -207,9 +207,9 @@
                                 <option value="NIL" disabled selected>Select Vendor</option>
                                     {% for vend in vendors %}
                                     {% if vend.cid_id == cmp1.cid %}
-                                    <a href="{% url 'sa' %}">
+                                    
                                     <option text="{{ vend.vendorid }}" value="{{ vend.firstname }} {{ vend.lastname }}">{{ vend.firstname }} {{ vend.lastname }}</option>
-                                    </a>
+
                                     {% endif %}
                                     {% endfor %}
                               </select>
@@ -316,9 +316,9 @@
                                     <option value="NIL" disabled selected>Select Customer</option>
                                     {% for cust in customers %}
                                     {% if cust.cid_id == cmp1.cid %}
-                                    <a href="{% url 'sa' %}">
+                                    
                                     <option text="{{ cust.customerid }}" value="{{ cust.firstname }} {{ cust.lastname }}">{{ cust.firstname }} {{ cust.lastname }}</option>
-                                    </a>
+                                    
                                     {% endif %}
                                     {% endfor %}
                                 </select>
@@ -330,9 +330,8 @@
                                     <option value="NIL" disabled selected>Select Vendor</option>
                                     {% for vend in vendors %}
                                     {% if vend.cid_id == cmp1.cid %}
-                                    <a href="{% url 'sa' %}">
                                     <option text="{{ vend.vendorid }}" value="{{ vend.firstname }} {{ vend.lastname }}">{{ vend.firstname }} {{ vend.lastname }}</option>
-                                    </a>
+                                    
                                     {% endif %}
                                     {% endfor %}
                                 </select>
@@ -1591,7 +1590,7 @@
             </table>
         </div>
         <div id="pDetails" class="container"  >
-            <table class="table table-responsive" >
+            <table class="table" >
                
                 <tr style="text-align:center ;background-color: rgba(51, 51, 75, 0.829);" class="rw">
                     <th>Date</th>
@@ -1605,9 +1604,9 @@
                 <tr style="text-align:center ;" class="rw">
 
                     <td>{{ pym.date }}</td>
-                    <td>Customer Payment</td>
+                    <td>Customer Payment:<br>{{ pym.customer }}</td>
                     <td>{{ pym.amount_received }}</td>
-                    <td>0.0</td>
+                    <td></td>
                     <td>{{ pym.running_bal }}</td>
                     
                 </tr>
@@ -1619,9 +1618,9 @@
                 <tr style="text-align:center ;" class="rw">
 
                     <td>{{ pym2.date }}</td>
-                    <td>Vendor Payment</td>
+                    <td>Vendor Payment:<br>{{ pym2.vendor }}</td>
+                    <td></td>
                     <td>{{ pym2.amount_received }}</td>
-                    <td>0.0</td>
                     <td>{{ pym2.running_bal }}</td>
                     
                 </tr>
@@ -1629,17 +1628,17 @@
                 {% endfor %}
                 
                 {% for exp in exppenses %}
-                
+                {% if exp.cid_id == cmp1.cid %}
                 <tr style="text-align:center ;" class="rw">
 
                     <td>{{ exp.date }}</td>
-                    <td>Expense</td>
-                    <td>0.0</td>
+                    <td>Expense:<br>{{ exp.expenseaccount }}</td>
+                    <td></td>
                     <td>{{ exp.amount }}</td>
                     <td>{{ exp.running_bal }}</td>
                     
                 </tr>
-                
+                {% endif %}
                 {% endfor %}
 
 
