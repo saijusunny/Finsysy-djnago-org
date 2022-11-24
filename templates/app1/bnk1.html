@@ -1555,11 +1555,12 @@
             </tr>
         </tbody>
     </table>
+    
 </div>
 <div class="container">
         <div class="over" id="overvi" class="container">
             
-            <table class="table table-responsive ">
+            <table class="table">
                 <tbody>
                 <tr style="text-align: center; background-color: rgba(51, 51, 75, 0.829);" class="">
                     <th>Date </th>
@@ -1604,7 +1605,8 @@
                 <tr style="text-align:center ;" class="rw">
 
                     <td>{{ pym.date }}</td>
-                    <td>Customer Payment:<br>{{ pym.customer }}</td>
+                    
+                    <td><a href="" data-id="1" data-dismiss="modal"  data-target="#edit_section "data-toggle="modal">Customer Payment:<br>{{ pym.customer }}</a> </td>
                     <td>{{ pym.amount_received }}</td>
                     <td></td>
                     <td>{{ pym.running_bal }}</td>
@@ -1615,10 +1617,10 @@
 
                 {% for pym2 in pym_item %}
                 {% if pym2.cid_id == cmp1.cid %}
-                <tr style="text-align:center ;" class="rw">
+                <tr style="text-align:center ;" class="rw">edit_section_vend
 
                     <td>{{ pym2.date }}</td>
-                    <td>Vendor Payment:<br>{{ pym2.vendor }}</td>
+                    <td><a href="" data-id="1" data-dismiss="modal"  data-target="#edit_section_vend "data-toggle="modal">Vendor Payment:<br>{{ pym2.vendor }}</a></td>
                     <td></td>
                     <td>{{ pym2.amount_received }}</td>
                     <td>{{ pym2.running_bal }}</td>
@@ -1632,7 +1634,7 @@
                 <tr style="text-align:center ;" class="rw">
 
                     <td>{{ exp.date }}</td>
-                    <td>Expense:<br>{{ exp.expenseaccount }}</td>
+                    <td><a href="" data-id="1" data-dismiss="modal"  data-target="#edit_section_exp "data-toggle="modal">Expense:<br>{{ exp.expenseaccount }}</a></td>
                     <td></td>
                     <td>{{ exp.amount }}</td>
                     <td>{{ exp.running_bal }}</td>
@@ -1680,36 +1682,216 @@
             </table>
         </div>
     </div>
-
-
-        
-
-
     
-    
+    <!-- edit section -->
+    <div class="modal fade" id="edit_section">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="background-color: #213b52;">
+                <div class="modal-header">
+                    <h3 class="m-3">Customer Details</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card p-3 m-3">
+                        <form method="post" action="{%url 'payment_vnk' bk.accounts1id%}">
+                            {% csrf_token %}
+                            <div class="row mt-2 mb-2">
+                                <div class="col-md-6">
+                                    
+                                        
+                                </div>
+                                <div class="col-md-6" style="text-align: right;">
+                                    <button>Edit</button>
+                                    <button>Delete</button>
+                                    <button>Attach</button>
 
-   
-    
-   
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row mt-2 mb-2">
+                                <div class="col-md-6">
+                                    <h3>$5000</h3>
+                                    <h6>on 10 Nov 2022</h6>
+                                        
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row mt-2 mb-2">
+                                <div class="col-md-6">
+                                    <h6>Customer</h6>
+                                    <h5>Arjun Reddy</h5>
+                                    <br>
+                                    
+                                    <h6>Bank Reference Number</h6>
+                                    <h5>1001</h5>
+                                    <br>
+                                    
+                                    <h6>Received Through</h6>
+                                    <h5>Bank Transfer</h5>
+                                    
+                                </div>
+                            </div><br>
 
+                            <div class="row mt-2 mb-2">
+                                <div class="col-md-6">
+                                    <h6>Payment Reference Number</h6>
+                                    <h5>1001</h5>
+                                    <br>
+                                    
+                                    <h6>Bank Reference Number</h6>
+                                    <h5>1001</h5>
+                                        
+                                </div>
+                            </div>
 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="modal fade" id="edit_section_vend">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="background-color: #213b52;">
+                <div class="modal-header">
+                    <h3 class="m-3">Vendor Details</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card p-3 m-3">
+                        <form method="post" action="{%url 'payment_vnk' bk.accounts1id%}">
+                            {% csrf_token %}
+                            <div class="row mt-2 mb-2">
+                                <div class="col-md-6">
+                                    
+                                        
+                                </div>
+                                <div class="col-md-6" style="text-align: right;">
+                                    <button>Edit</button>
+                                    <button>Delete</button>
+                                    <button>Attach</button>
 
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row mt-2 mb-2">
+                                <div class="col-md-6">
+                                    <h3>$5000</h3>
+                                    <h6>on 10 Nov 2022</h6>
+                                        
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row mt-2 mb-2">
+                                <div class="col-md-6">
+                                    <h6>Customer</h6>
+                                    <h5>Arjun Reddy</h5>
+                                    <br>
+                                    
+                                    <h6>Bank Reference Number</h6>
+                                    <h5>1001</h5>
+                                    <br>
+                                    
+                                    <h6>Received Through</h6>
+                                    <h5>Bank Transfer</h5>
+                                    
+                                </div>
+                            </div><br>
+
+                            <div class="row mt-2 mb-2">
+                                <div class="col-md-6">
+                                    <h6>Payment Reference Number</h6>
+                                    <h5>1001</h5>
+                                    <br>
+                                    
+                                    <h6>Bank Reference Number</h6>
+                                    <h5>1001</h5>
+                                        
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="edit_section_exp">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="background-color: #213b52;">
+                <div class="modal-header">
+                    <h3 class="m-3">Expense Details</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card p-3 m-3">
+                        <form method="post" action="{%url 'payment_vnk' bk.accounts1id%}">
+                            {% csrf_token %}
+                            <div class="row mt-2 mb-2">
+                                <div class="col-md-6">
+                                    
+                                        
+                                </div>
+                                <div class="col-md-6" style="text-align: right;">
+                                    <button>Edit</button>
+                                    <button>Delete</button>
+                                    <button>Attach</button>
+
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row mt-2 mb-2">
+                                <div class="col-md-6">
+                                    <h3>$5000</h3>
+                                    <h6>on 10 Nov 2022</h6>
+                                        
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row mt-2 mb-2">
+                                <div class="col-md-6">
+                                    <h6>Customer</h6>
+                                    <h5>Arjun Reddy</h5>
+                                    <br>
+                                    
+                                    <h6>Bank Reference Number</h6>
+                                    <h5>1001</h5>
+                                    <br>
+                                    
+                                    <h6>Received Through</h6>
+                                    <h5>Bank Transfer</h5>
+                                    
+                                </div>
+                            </div><br>
+
+                            <div class="row mt-2 mb-2">
+                                <div class="col-md-6">
+                                    <h6>Payment Reference Number</h6>
+                                    <h5>1001</h5>
+                                    <br>
+                                    
+                                    <h6>Bank Reference Number</h6>
+                                    <h5>1001</h5>
+                                        
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
-        
-        
-    
 </div>
 
-
-
-
-
-
-
-    
 
     <script>
 
