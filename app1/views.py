@@ -11,7 +11,7 @@ from .models import advancepayment, paydowncreditcard, salesrecpts, timeact, tim
     bills, invoice, expences, payment, credit, delayedcharge, estimate, service, noninventory, bundle, employee, \
     payslip, inventory, customer, supplier, company, accounts, ProductModel, ItemModel, accountype, \
     expenseaccount, incomeaccount, accounts1, recon1, recordpay, addtax1, bankstatement, customize,customer_payment, \
-    vendor_payment
+    vendor_payment, expense_banking
 from django.contrib.auth.models import auth, User
 from django.contrib import messages
 from django.db.models import Sum, Q
@@ -32069,8 +32069,93 @@ def bnk1(request,pk):
     'exppenses':exppenses,
     'customers':customers,
     'vendors':vendors,
+    
     }
     return render(request,"app1/bnk1.html",context)
+
+def cus_view(request,pk):
+    
+    cmp1 = company.objects.get(id=request.session["uid"])
+    exp_dat=customer_payment.objects.get(customerpymid=pk)
+    customers=customer.objects.all()
+    vendors=vendor.objects.all()
+    
+    context={
+        'cus_dat':exp_dat,
+        'cmp1':cmp1,
+        'customers':customers,
+        'vendors':vendors,
+    }
+    return render(request,'app1/bank_cust_view.html',context)
+
+def deletecus(request,pk):
+    cmp1 = company.objects.get(id=request.session['uid'])
+    custom = customer_payment.objects.get(customerpymid=pk, cid=cmp1)
+    custom.delete()
+    return redirect('bnnk')
+
+def cus_edit(request,pk):
+    bk=customer_payment.objects.get(customerpymid=pk)
+    bk.customer=request.POST.get('customername')
+    bk.vendor=request.POST.get('vendor')
+    bk.amount_received=request.POST.get('amt_cu')
+    bk.date=request.POST.get('cus_date')
+    bk.received_through=request.POST.get('rese_to')
+    bk.paym_ref_no=request.POST.get('py_ref')
+    bk.bnk_ref_no=request.POST.get('bnk_ref')
+    bk.file = request.FILES.get('pic')
+    bk.des= request.POST.get('type_details')
+
+        
+    bk.save()
+    return redirect('bnnk')
+
+
+def exp_view(request,pk):
+    
+    cmp1 = company.objects.get(id=request.session["uid"])
+    exp_dat=expense_banking.objects.get(expenseid=pk)
+    customers=customer.objects.all()
+    vendors=vendor.objects.all()
+    
+    context={
+        'exp_dat':exp_dat,
+        'cmp1':cmp1,
+        'customers':customers,
+        'vendors':vendors,
+    }
+    return render(request,'app1/bank_exp_view.html',context)
+
+def exp_edit(request,pk):
+    
+        bk=expense_banking.objects.get(expenseid=pk)
+        bk.expenseaccount=request.POST.get('acc_type')
+        bk.vendor=request.POST.get('vendor_nm')
+        bk.amount=request.POST.get('amount')
+        bk.note=request.POST.get('Type details')
+        bk.date=request.POST.get('dt_exp')
+        
+        bk.reference=request.POST.get('ref_no')
+        bk.customer=request.POST.get('cust')
+        bk.file = request.FILES.get('pic')
+        
+        bk.save()
+        return redirect('bnnk')
+        
+        # rst=bk.amount
+        # sum1=bk.balance
+
+        # result=float(rst)+float(sum1)
+        # rt=bk.balance
+        
+        # running_bl=float(sum1)-float(amount)
+
+def deleteexp(request, pk):
+        cmp1 = company.objects.get(id=request.session['uid'])
+        custom = expense_banking.objects.get(expenseid=pk, cid=cmp1)
+        custom.delete()
+        return redirect('bnnk')
+
 
 def add_expenses(request,pk):
     if request.method =="POST":
@@ -32098,6 +32183,8 @@ def add_expenses(request,pk):
     else:
         return redirect('bnnk')
 
+
+    
 
 def payment_vnk(request,pk):
     if request.method =="POST":

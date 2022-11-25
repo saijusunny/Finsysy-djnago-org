@@ -1604,9 +1604,9 @@
                 {% if pym.cid_id == cmp1.cid %}
                 <tr style="text-align:center ;" class="rw">
 
-                    <td>{{ pym.date }}</td>
+                    <td>{{ pym.date }}</td>cus_view
                     
-                    <td><a href="" data-id="1" data-dismiss="modal"  data-target="#edit_section "data-toggle="modal">Customer Payment:<br>{{ pym.customer }}</a> </td>
+                    <td><a href="{% url 'cus_view' pym.customerpymid %}" >Customer Payment:<br>{{ pym.customer }}</a> </td>
                     <td>{{ pym.amount_received }}</td>
                     <td></td>
                     <td>{{ pym.running_bal }}</td>
@@ -1617,10 +1617,10 @@
 
                 {% for pym2 in pym_item %}
                 {% if pym2.cid_id == cmp1.cid %}
-                <tr style="text-align:center ;" class="rw">edit_section_vend
+                <tr style="text-align:center ;" class="rw">
 
                     <td>{{ pym2.date }}</td>
-                    <td><a href="" data-id="1" data-dismiss="modal"  data-target="#edit_section_vend "data-toggle="modal">Vendor Payment:<br>{{ pym2.vendor }}</a></td>
+                    <td><a href="" >Vendor Payment:<br>{{ pym2.vendor }}</a></td>
                     <td></td>
                     <td>{{ pym2.amount_received }}</td>
                     <td>{{ pym2.running_bal }}</td>
@@ -1632,11 +1632,11 @@
                 {% for exp in exppenses %}
                 {% if exp.cid_id == cmp1.cid %}
                 <tr style="text-align:center ;" class="rw">
-
+                    <!-- data-id="1" data-dismiss="modal"  data-target="#edit_section_exp "data-toggle="modal" -->
                     <td>{{ exp.date }}</td>
-                    <td><a href="" data-id="1" data-dismiss="modal"  data-target="#edit_section_exp "data-toggle="modal">Expense:<br>{{ exp.expenseaccount }}</a></td>
+                    <td><a href="{% url 'exp_view' exp.expenseid %}" >Expense:<br>{{ exp.expenseaccount }}</a></td>
                     <td></td>
-                    <td>{{ exp.amount }}</td>
+                    <td>{{ exp.amount }}</td> 
                     <td>{{ exp.running_bal }}</td>
                     
                 </tr>
@@ -1649,7 +1649,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
+                    <td></td> 
                     
                 </tr>
                         
@@ -1849,7 +1849,7 @@
                             <div class="row mt-2 mb-2">
                                 <div class="col-md-6">
                                     <h3>$5000</h3>
-                                    <h6>on 10 Nov 2022</h6>
+                                    <h6>exppensess.date</h6>
                                         
                                 </div>
                             </div>

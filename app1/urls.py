@@ -765,11 +765,16 @@ urlpatterns = [
     path(r'^add_expenses/(?P<pk>\d+)$',views.add_expenses,name='add_expenses'),
     path(r'^payment_vnk/(?P<pk>\d+)$',views.payment_vnk,name='payment_vnk'),
     path(r'^payment_vendor/(?P<pk>\d+)$',views.payment_vendor,name='payment_vendor'),
+    path(r'^exp_view/(?P<pk>\d+)$',views.exp_view,name='exp_view'),
+    path(r'^exp_edit/(?P<pk>\d+)$',views.exp_edit,name='exp_edit'),
+    path(r'^deleteexp/(?P<pk>\d+)$',views.deleteexp,name='deleteexp'),
+    path(r'^cus_view/(?P<pk>\d+)$',views.cus_view,name='cus_view'),
+    path(r'^cus_edit/(?P<pk>\d+)$',views.cus_edit,name='cus_edit'),
+    path(r'^deletecus/(?P<pk>\d+)$',views.deletecus,name='deletecus'),
 
 
         
    
-    
 
     
 
