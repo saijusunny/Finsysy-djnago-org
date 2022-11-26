@@ -771,6 +771,9 @@ urlpatterns = [
     path(r'^cus_view/(?P<pk>\d+)$',views.cus_view,name='cus_view'),
     path(r'^cus_edit/(?P<pk>\d+)$',views.cus_edit,name='cus_edit'),
     path(r'^deletecus/(?P<pk>\d+)$',views.deletecus,name='deletecus'),
+    path(r'^vend_view/(?P<pk>\d+)$',views.vend_view,name='vend_view'),
+    path(r'^vend_edit/(?P<pk>\d+)$',views.vend_edit,name='vend_edit'),
+    path(r'^deletevend/(?P<pk>\d+)$',views.deletevend,name='deletevend'),
 
 
         

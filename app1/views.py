@@ -32052,7 +32052,7 @@ def bnnk(request):
     return render(request,'app1/bnk.html',context)
 
 
-
+@login_required(login_url='regcomp')
 def bnk1(request,pk):
 
     bk=accounts1.objects.get(accounts1id=pk)
@@ -32073,6 +32073,67 @@ def bnk1(request,pk):
     }
     return render(request,"app1/bnk1.html",context)
 
+@login_required(login_url='regcomp')
+def vend_view(request,pk):
+    
+    cmp1 = company.objects.get(id=request.session["uid"])
+    vend_dat=vendor_payment.objects.get(vendorpymid=pk)
+    customers=customer.objects.all()
+    vendors=vendor.objects.all()
+    
+    context={
+        'vend_dat':vend_dat,
+        'cmp1':cmp1,
+        'customers':customers,
+        'vendors':vendors,
+    }
+    return render(request,'app1/bank_vend_view.html',context)
+@login_required(login_url='regcomp')
+def deletevend(request,pk):
+    cmp1 = company.objects.get(id=request.session['uid'])
+    custom = vendor_payment.objects.get(vendorpymid=pk, cid=cmp1)
+
+    bnk_id=custom.accounts1id_id
+    bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
+    bank_bl_val=bnk_bal.balance
+    crnt_bal=custom.amount_received
+    final_val=float(bank_bl_val)+float(crnt_bal)
+    bnk_bal.balance=final_val
+    bnk_bal.save()
+    custom.delete()
+    return redirect('bnnk')
+@login_required(login_url='regcomp')
+def vend_edit(request,pk):
+    if request.method =="POST":
+        bk=vendor_payment.objects.get(vendorpymid=pk)
+        bnk_id=bk.accounts1id_id
+        bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
+        bank_bl_val=bnk_bal.balance
+        crnt_bal=bk.amount_received
+        final_val=float(bank_bl_val)+float(crnt_bal)
+
+        bk.customer=request.POST.get('customer')
+        bk.vendor=request.POST.get('vendor')
+        bk.amount_received=request.POST.get('amount')
+        bk.des=request.POST.get('description')
+        bk.date=request.POST.get('tdate')
+        bk.account=request.POST.get('account')
+        bk.paid_through=request.POST.get('paid')
+        bk.ref_no=request.POST.get('refenrence')
+                
+
+        edited_val=request.POST.get('amount')
+        remin_bal=float(final_val)-float(edited_val)
+        bk.running_bal=remin_bal
+        bk.save()
+        bnk_bal.balance=remin_bal
+        bnk_bal.save()
+        return redirect('bnnk')
+    else:
+        return redirect('bnnk')
+
+@login_required(login_url='regcomp')
+
 def cus_view(request,pk):
     
     cmp1 = company.objects.get(id=request.session["uid"])
@@ -32087,30 +32148,51 @@ def cus_view(request,pk):
         'vendors':vendors,
     }
     return render(request,'app1/bank_cust_view.html',context)
-
+@login_required(login_url='regcomp')
 def deletecus(request,pk):
     cmp1 = company.objects.get(id=request.session['uid'])
     custom = customer_payment.objects.get(customerpymid=pk, cid=cmp1)
+
+    bnk_id=custom.accounts1id_id
+    bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
+    bank_bl_val=bnk_bal.balance
+    crnt_bal=custom.amount_received
+    final_val=float(bank_bl_val)-float(crnt_bal)
+    bnk_bal.balance=final_val
+    bnk_bal.save()
     custom.delete()
     return redirect('bnnk')
-
+@login_required(login_url='regcomp')
 def cus_edit(request,pk):
-    bk=customer_payment.objects.get(customerpymid=pk)
-    bk.customer=request.POST.get('customername')
-    bk.vendor=request.POST.get('vendor')
-    bk.amount_received=request.POST.get('amt_cu')
-    bk.date=request.POST.get('cus_date')
-    bk.received_through=request.POST.get('rese_to')
-    bk.paym_ref_no=request.POST.get('py_ref')
-    bk.bnk_ref_no=request.POST.get('bnk_ref')
-    bk.file = request.FILES.get('pic')
-    bk.des= request.POST.get('type_details')
+    if request.method =="POST":
+        bk=customer_payment.objects.get(customerpymid=pk)
+        bnk_id=bk.accounts1id_id
+        bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
+        bank_bl_val=bnk_bal.balance
+        crnt_bal=bk.amount_received
+        final_val=float(bank_bl_val)-float(crnt_bal)
 
-        
-    bk.save()
-    return redirect('bnnk')
+        bk.customer=request.POST.get('customername')
+        bk.vendor=request.POST.get('vendor')
+        bk.amount_received=request.POST.get('amt_cu')
+        bk.date=request.POST.get('cus_date')
+        bk.received_through=request.POST.get('rese_to')
+        bk.paym_ref_no=request.POST.get('py_ref')
+        bk.bnk_ref_no=request.POST.get('bnk_ref')
+        bk.file = request.FILES.get('pic')
+        bk.des= request.POST.get('type_details')
 
+        edited_val=request.POST.get('amt_cu')
+        remin_bal=float(final_val)+float(edited_val)
+        bk.running_bal=remin_bal
+        bk.save()
+        bnk_bal.balance=remin_bal
+        bnk_bal.save()
+        return redirect('bnnk')
+    else:
+        return redirect('bnnk')
 
+@login_required(login_url='regcomp')
 def exp_view(request,pk):
     
     cmp1 = company.objects.get(id=request.session["uid"])
@@ -32125,10 +32207,16 @@ def exp_view(request,pk):
         'vendors':vendors,
     }
     return render(request,'app1/bank_exp_view.html',context)
-
+@login_required(login_url='regcomp')
 def exp_edit(request,pk):
-    
+    if request.method =="POST":
         bk=expense_banking.objects.get(expenseid=pk)
+        bnk_id=bk.accounts1id_id
+        bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
+        bank_bl_val=bnk_bal.balance
+        crnt_bal=bk.amount
+        final_val=float(bank_bl_val)+float(crnt_bal)
+
         bk.expenseaccount=request.POST.get('acc_type')
         bk.vendor=request.POST.get('vendor_nm')
         bk.amount=request.POST.get('amount')
@@ -32138,25 +32226,35 @@ def exp_edit(request,pk):
         bk.reference=request.POST.get('ref_no')
         bk.customer=request.POST.get('cust')
         bk.file = request.FILES.get('pic')
-        
+        edited_val=request.POST.get('amount')
+        remin_bal=float(final_val)-float(edited_val)
+        bk.running_bal=remin_bal
         bk.save()
+        bnk_bal.balance=remin_bal
+        bnk_bal.save()
+        
+        
         return redirect('bnnk')
-        
-        # rst=bk.amount
-        # sum1=bk.balance
-
-        # result=float(rst)+float(sum1)
-        # rt=bk.balance
-        
-        # running_bl=float(sum1)-float(amount)
-
+    else:
+        return redirect('bnnk')
+@login_required(login_url='regcomp')
 def deleteexp(request, pk):
         cmp1 = company.objects.get(id=request.session['uid'])
         custom = expense_banking.objects.get(expenseid=pk, cid=cmp1)
+
+        bnk_id=custom.accounts1id_id
+        bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
+        bank_bl_val=bnk_bal.balance
+        crnt_bal=custom.amount
+        final_val=float(bank_bl_val)+float(crnt_bal)
+        bnk_bal.balance=final_val
+
+        bnk_bal.save()
+
         custom.delete()
         return redirect('bnnk')
 
-
+@login_required(login_url='regcomp')
 def add_expenses(request,pk):
     if request.method =="POST":
         bk=accounts1.objects.get(accounts1id=pk)
@@ -32185,7 +32283,7 @@ def add_expenses(request,pk):
 
 
     
-
+@login_required(login_url='regcomp')
 def payment_vnk(request,pk):
     if request.method =="POST":
         bk=accounts1.objects.get(accounts1id=pk)
@@ -32200,6 +32298,7 @@ def payment_vnk(request,pk):
         bnk_ref=request.POST.get('bnk_ref')
         cmp1 = company.objects.get(id=request.session["uid"])
         file = request.FILES.get('pic')
+        print(file)
         sum1=bk.balance
         
         running_bl=float(sum1)+float(amt_cu)
@@ -32224,7 +32323,7 @@ def payment_vnk(request,pk):
     else:
        return redirect('bnnk') 
 
-
+@login_required(login_url='regcomp')
 def payment_vendor(request,pk):
     if request.method =="POST":
         bk=accounts1.objects.get(accounts1id=pk)
@@ -32236,7 +32335,7 @@ def payment_vendor(request,pk):
         cus_date=request.POST.get('tdate')
         acc=request.POST.get('account')
         paid=request.POST.get('paid')
-        ref=request.POST.get('py_ref')
+        ref=request.POST.get('refenrence')
         cid=company.objects.get(id=request.session["uid"])
         cmp1 = company.objects.get(id=request.session["uid"])
         cust_nm=request.POST.get('customer')
