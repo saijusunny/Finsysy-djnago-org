@@ -32043,12 +32043,12 @@ def purchase_acctransactions1(request):
 
 @login_required(login_url='regcomp')
 def bnnk(request):
-    
+    cmp1 = company.objects.get(id=request.session["uid"])
     i=accounts1.objects.filter(acctype='Bank')
     c=accounts1.objects.filter(acctype='Cash')
     u=accounts1.objects.filter(acctype='Undepposited Funds')
     
-    context={'i':i,'c':c,'u':u}
+    context={'i':i,'c':c,'u':u,'cmp1':cmp1}
     return render(request,'app1/bnk.html',context)
 
 

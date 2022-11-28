@@ -322,6 +322,7 @@
 
                     <!-- display data -->
                     {% for h in h %}
+                    {% if h.cid_id == cmp1.cid %}
                     <tr class="rw">
                        
                         <td  style="text-align: center;">
@@ -336,13 +337,15 @@
                        
                         
                     </tr>
+                    {% endif %}
                     {% endfor %}
 
                     {% for c in c %}
-                    <tr class="rw" >
+                    {% if c.cid_id == cmp1.cid %}
+                    <tr class="rw" data-href="{% url 'bnk1' c.accounts1id   %}">
                         <td name="name" id="name"  style="text-align: center;">
                             
-                            <a href="{% url 'bnk1' c.accounts1id   %}">{{ c.name }}</a> 
+                            {{ c.name }}
                         </td>
                         <td style="text-align: center;">
                         {{ c.acctype }}
@@ -352,8 +355,11 @@
                         </td>
                         
                     </tr>
+                    {% endif %}
                     {% endfor %}
+
                     {% for i in i %}
+                    {% if i.cid_id == cmp1.cid %}
                     <tr class="rw" >
                         <td  style="text-align: center;">
                         <a href="{% url 'bnk1' i.accounts1id   %}">{{ i.name }}</a> 
@@ -370,10 +376,11 @@
                         
                     </tr>
 
-                    
+                    {% endif %}
                     {% endfor %}
 
                     {% for bnk in bnk %}
+                    {% if bnk.cid_id == cmp1.cid %}
                     <tr class="rw" >
                         <td name="name" id="name"  style="text-align: center;">
                             
@@ -387,9 +394,11 @@
                         </td>
                         
                     </tr>
+                    {% endif %}
                     {% endfor %}
 
                     {% for fx in fx %}
+                    {% if fx.cid_id == cmp1.cid %}
                     <tr class="rw" >
                         <td name="name" id="name"  style="text-align: center;">
                             
@@ -403,9 +412,11 @@
                         </td>
                         
                     </tr>
+                    {% endif %}
                     {% endfor %}
 
                     {% for nca in nca %}
+                    {% if nca.cid_id == cmp1.cid %}
                     <tr class="rw" >
                         <td name="name" id="name"  style="text-align: center;">
                             
@@ -419,9 +430,11 @@
                         </td>
                         
                     </tr>
+                    {% endif %}
                     {% endfor %}
 
                     {% for u in u %}
+                    {% if u.cid_id == cmp1.cid %}
                     <tr class="rw" >
                         <td name="name" id="name"  style="text-align: center;">
                             
@@ -435,9 +448,11 @@
                         </td>
                         
                     </tr>
+                    {% endif %}
                     {% endfor %}
 
                     {% for cd in cd %}
+                    {% if cd.cid_id == cmp1.cid %}
                     <tr class="rw" >
                         <td name="name" id="name"  style="text-align: center;">
                             
@@ -451,8 +466,10 @@
                         </td>
                         
                     </tr>
+                    {% endif %}
                     {% endfor %}
                     {% for ncl in ncl1 %}
+                    {% if ncl.cid_id == cmp1.cid %}
                     <tr class="rw" >
                         <td name="name" id="name"  style="text-align: center;">
                             
@@ -466,8 +483,10 @@
                         </td>
                         
                     </tr>
+                    {% endif %}
                     {% endfor %}
                     {% for eq in eq %}
+                    {% if eq.cid_id == cmp1.cid %}
                     <tr class="rw" >
                         <td name="name" id="name"  style="text-align: center;">
                             
@@ -481,8 +500,10 @@
                         </td>
                         
                     </tr>
+                    {% endif %}
                     {% endfor %}
                     {% for inc in inc %}
+                    {% if inc.cid_id == cmp1.cid %}
                     <tr class="rw" >
                         <td name="name" id="name"  style="text-align: center;">
                             
@@ -496,8 +517,10 @@
                         </td>
                         
                     </tr>
+                    {% endif %}
                     {% endfor %}
                     {% for oi in oi %}
+                    {% if oi.cid_id == cmp1.cid %}
                     <tr class="rw" >
                         <td name="name" id="name"  style="text-align: center;">
                             
@@ -511,9 +534,11 @@
                         </td>
                         
                     </tr>
+                    {% endif %}
                     {% endfor %}
 
                     {% for j in j %}
+                    {% if j.cid_id == cmp1.cid %}
                     <tr class="rw" >
                         <td name="name" id="name"  style="text-align: center;">
                             
@@ -527,9 +552,11 @@
                         </td>
                         
                     </tr>
+                    {% endif %}
                     {% endfor %}
 
                     {% for ex in ex %}
+                    {% if ex.cid_id == cmp1.cid %}
                     <tr class="rw" >
                         <td name="name" id="name"  style="text-align: center;">
                             
@@ -543,6 +570,7 @@
                         </td>
                         
                     </tr>
+                    {% endif %}
                     {% endfor %}
                 </tbody>
 
